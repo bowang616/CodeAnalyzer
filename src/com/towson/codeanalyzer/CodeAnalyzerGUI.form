@@ -1,34 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.towson.codeanalyzer.CodeAnalyzerGUI">
-  <grid id="27dc6" binding="CodeAnalyzerMainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="MetricsMainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="814" height="524"/>
     </constraints>
     <properties>
-      <font/>
+      <background color="-12828863"/>
     </properties>
-    <border type="none" title=""/>
+    <border type="none">
+      <font/>
+    </border>
     <children>
-      <component id="ca4a1" class="javax.swing.JLabel" binding="JLabel_Welcome">
-        <constraints border-constraint="North"/>
-        <properties>
-          <font size="20" style="1"/>
-          <horizontalAlignment value="0"/>
-          <horizontalTextPosition value="0"/>
-          <text value="Welcome to Code Analyzer Plugin!"/>
-        </properties>
-      </component>
-      <component id="e4067" class="javax.swing.JLabel" binding="JLabel_FileCount">
+      <tabbedpane id="4af9f" binding="MainTabPanel">
         <constraints border-constraint="Center"/>
         <properties>
-          <enabled value="true"/>
-          <horizontalAlignment value="2"/>
-          <horizontalTextPosition value="2"/>
-          <text value=""/>
-          <verticalAlignment value="0"/>
-          <verticalTextPosition value="0"/>
+          <background color="-12828863"/>
+          <foreground color="-1"/>
+          <requestFocusEnabled value="false"/>
+          <tabLayoutPolicy value="1"/>
+          <tabPlacement value="1"/>
         </properties>
-      </component>
+        <border type="none">
+          <title-color color="-16777216"/>
+        </border>
+        <children>
+          <grid id="b3d47" binding="ProjectPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Project"/>
+            </constraints>
+            <properties>
+              <background color="-12828863"/>
+              <toolTipText value=""/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="c6f3c" class="javax.swing.JLabel" binding="WelcomeLabel">
+                <constraints border-constraint="North"/>
+                <properties>
+                  <background color="-12828863"/>
+                  <foreground color="-1"/>
+                  <horizontalAlignment value="0"/>
+                  <labelFor value="c1597"/>
+                  <maximumSize width="2147483647" height="2147483647"/>
+                  <text value="Welcome to Code Analyzer Plugin!"/>
+                </properties>
+              </component>
+              <component id="b63c9" class="javax.swing.JLabel" binding="JLable_FileCount">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <background color="-12828863"/>
+                  <foreground color="-1"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="11"/>
+                  <labelFor value="8f14"/>
+                  <maximumSize width="2147483647" height="2147483647"/>
+                  <text value="Label"/>
+                  <verticalAlignment value="1"/>
+                  <verticalTextPosition value="1"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="f328e" binding="JavaPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Java"/>
+            </constraints>
+            <properties>
+              <background color="-12828863"/>
+              <foreground color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <scrollpane id="c1597">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <background color="-12828863"/>
+                  <foreground color="-1"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="872c1" class="javax.swing.JList" binding="ListJavaName">
+                    <constraints/>
+                    <properties>
+                      <background color="-12828863"/>
+                      <foreground color="-1"/>
+                      <model/>
+                      <selectionMode value="1"/>
+                      <visibleRowCount value="10"/>
+                    </properties>
+                    <clientProperties>
+                      <List.isFileList class="java.lang.Boolean" value="false"/>
+                    </clientProperties>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="d69da" class="javax.swing.JLabel" binding="JLable_JavaFileCount">
+                <constraints border-constraint="Last"/>
+                <properties>
+                  <foreground color="-1"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="11"/>
+                  <text value="Label"/>
+                  <verticalAlignment value="1"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="2f4bc" binding="XmlPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Xml"/>
+            </constraints>
+            <properties>
+              <background color="-12828863"/>
+              <foreground color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <scrollpane id="8f14">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <background color="-12828863"/>
+                  <foreground color="-1"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="7c9e" class="javax.swing.JList" binding="ListXmlName">
+                    <constraints/>
+                    <properties>
+                      <background color="-12828863"/>
+                      <foreground color="-1"/>
+                      <model/>
+                      <selectionMode value="1"/>
+                      <visibleRowCount value="10"/>
+                    </properties>
+                    <clientProperties>
+                      <List.isFileList class="java.lang.Boolean" value="false"/>
+                    </clientProperties>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="bfc1e" class="javax.swing.JLabel" binding="JLabel_XmlFileCount">
+                <constraints border-constraint="Last"/>
+                <properties>
+                  <foreground color="-1"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="Label"/>
+                  <verticalAlignment value="1"/>
+                  <verticalTextPosition value="1"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
     </children>
   </grid>
 </form>
