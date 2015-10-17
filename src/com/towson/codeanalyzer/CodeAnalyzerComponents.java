@@ -7,7 +7,6 @@ import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class CodeAnalyzerComponents implements ProjectComponent {
@@ -45,7 +44,7 @@ public class CodeAnalyzerComponents implements ProjectComponent {
         System.out.println("Code Analyzer Plugin has been activated for project " + this.project.getName());
         try
         {
-            this.panel = new CodeAnalyzerGUI(this.project.getBasePath());
+            this.panel = new CodeAnalyzerGUI(this.project.getBasePath(), this.project);
         }
         catch (Exception e)
         {
@@ -59,7 +58,6 @@ public class CodeAnalyzerComponents implements ProjectComponent {
         System.out.println("Code Analyzer Plugin  has been deactivated for project " + this.project.getName());
     }
 
-    @NotNull
     @Override
     public String getComponentName() {
         return "CodeAnalyzerComponents";
