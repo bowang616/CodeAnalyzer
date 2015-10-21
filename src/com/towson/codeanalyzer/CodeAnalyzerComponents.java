@@ -32,6 +32,7 @@ public class CodeAnalyzerComponents implements ProjectComponent {
         toolWindow.getContentManager().addContent(content);
     }
 
+    // Unregister project in menu
     @Override
     public void projectClosed() {
         ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(this.project);
@@ -55,9 +56,10 @@ public class CodeAnalyzerComponents implements ProjectComponent {
     // Deactivate plugin for project
     @Override
     public void disposeComponent() {
-        System.out.println("Code Analyzer Plugin  has been deactivated for project " + this.project.getName());
+        System.out.println("Code Analyzer Plugin has been deactivated for project " + this.project.getName());
     }
 
+    // Get class name
     @Override
     public String getComponentName() {
         return "CodeAnalyzerComponents";
