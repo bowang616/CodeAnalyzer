@@ -26,7 +26,7 @@
         <children>
           <grid id="b3d47" binding="ProjectPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <tabbedpane title="Project"/>
+              <tabbedpane title="Overview"/>
             </constraints>
             <properties>
               <background color="-12828863"/>
@@ -62,7 +62,7 @@
           </grid>
           <grid id="ec05d" binding="JavaTablePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <tabbedpane title="JAVA"/>
+              <tabbedpane title="Java"/>
             </constraints>
             <properties>
               <background color="-12828863"/>
@@ -95,7 +95,7 @@
           </grid>
           <grid id="c264c" binding="XmlTablePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <tabbedpane title="XML"/>
+              <tabbedpane title="Xml"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -118,8 +118,96 @@
               </scrollpane>
             </children>
           </grid>
+          <grid id="af57" binding="HTMLTablePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Html"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="b98d3">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="f468" class="javax.swing.JTable" binding="htmlTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-12828863"/>
+                      <foreground color="-1"/>
+                      <gridColor color="-12828863"/>
+                      <selectionBackground color="-12024100"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="c7f8f" binding="CSSTablePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Css"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="96296">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="da881" class="javax.swing.JTable" binding="cssTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-12828863"/>
+                      <foreground color="-1"/>
+                      <gridColor color="-12828863"/>
+                      <selectionBackground color="-12024100"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="ce156" binding="JSTablePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="JavaScript"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="341ec">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="2cd63" class="javax.swing.JTable" binding="jsTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-12828863"/>
+                      <foreground color="-1"/>
+                      <gridColor color="-12828863"/>
+                      <selectionBackground color="-12024100"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
         </children>
       </tabbedpane>
+      <grid id="e1a08" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="a8620" class="javax.swing.JButton" binding="RefreshBtn">
+            <constraints border-constraint="Before"/>
+            <properties>
+              <text value="Refresh"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

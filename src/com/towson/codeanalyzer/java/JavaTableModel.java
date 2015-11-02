@@ -14,7 +14,7 @@ import java.util.List;
 
 public class JavaTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = { "Source File Name", "Total Line Count", "Source Code Line Count"};
+    private final String[] columnNames = { "Source File Name", "Total Line Count", "Source Code Line Count", "Method Count"};
 
     private final List<JavaRowBean> data = new ArrayList();
 
@@ -46,6 +46,8 @@ public class JavaTableModel extends AbstractTableModel {
                         return bean.getTotal();
                     case 2:
                         return bean.getCode();
+                    case 3:
+                        return bean.getMethods();
                 }
                 throw new IllegalArgumentException("Column is out of bound. Index = " + columnIndex);
             }
@@ -65,6 +67,8 @@ public class JavaTableModel extends AbstractTableModel {
             case 1:
                 return Integer.class;
             case 2:
+                return Integer.class;
+            case 3:
                 return Integer.class;
         }
         throw new IllegalArgumentException("Column is out of bound. Index=" + columnIndex);
@@ -120,6 +124,27 @@ public class JavaTableModel extends AbstractTableModel {
 
     private void addRowSwing(JavaRowBean bean) {
         data.add(bean);
+        fireTableRowsInserted(data.size() - 1, data.size() - 1);
+    }
+
+    public void removeRow()
+    {
+        if (SwingUtilities.isEventDispatchThread())
+        {
+            removeRowSwing();
+        }
+        else
+        {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    JavaTableModel.this.removeRowSwing();
+                }
+            });
+        }
+    }
+
+    private void removeRowSwing() {
+        data.clear();
         fireTableRowsInserted(data.size() - 1, data.size() - 1);
     }
 }

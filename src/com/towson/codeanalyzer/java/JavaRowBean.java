@@ -17,13 +17,16 @@ public final class JavaRowBean {
     private String name;
     private Integer total;
     private Integer code;
+    private Integer methods;
 
-    public JavaRowBean(VirtualFile file, String name, Integer total,Integer code)
+    // Constructor
+    public JavaRowBean(VirtualFile file, String name, Integer total,Integer code, Integer method)
     {
         this.file = file;
         this.name = name;
         this.total = total;
         this.code = code;
+        this.methods = method;
     }
 
     public VirtualFile getFile()
@@ -65,6 +68,18 @@ public final class JavaRowBean {
         Integer oldValue = this.code;
         this.code = code;
         propertyChangeSupport.firePropertyChange("comment", oldValue, code);
+    }
+
+    public Integer getMethods()
+    {
+        return methods;
+    }
+
+    public void setMethods(Integer method)
+    {
+        Integer oldValue = this.methods;
+        this.methods = method;
+        propertyChangeSupport.firePropertyChange("methods", oldValue, methods);
     }
 
     public String toString()

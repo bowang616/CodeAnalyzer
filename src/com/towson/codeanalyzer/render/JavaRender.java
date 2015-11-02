@@ -19,7 +19,7 @@ public class JavaRender extends DefaultTableCellRenderer {
         {
             jLabel.setText("<html><b><font face=\"Verdana\" size=\"3\" color=\"navy\">" + value + "</font></b></html>");
         }
-        else if ((column == 7) || (column == 5) || (column == 3))
+        else if ((column == 7) || (column == 5))
         {
             String s = DECIMAL_FORMAT.format(value);
             jLabel.setText(s);
