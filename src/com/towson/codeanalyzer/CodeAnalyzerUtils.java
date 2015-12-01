@@ -332,4 +332,201 @@ public final class CodeAnalyzerUtils {
         }
         return code;
     }
+
+    public static ArrayList<String> getActivityName(VirtualFile file)
+    {
+        ArrayList<String> actFiles = new ArrayList<String>();
+        try
+        {
+            actFiles = getActivityName(file.getInputStream());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return actFiles;
+    }
+
+    private static ArrayList<String> getActivityName(InputStream stream)
+    {
+        boolean isInComment = false;
+        ArrayList<String> strAtyName = new ArrayList<String>();
+
+        StringBuffer buff = new StringBuffer();
+
+        try
+        {
+            BufferedInputStream inputStream = new BufferedInputStream(stream);
+            LineNumberReader streamReader = new LineNumberReader(new InputStreamReader(inputStream));
+            while (streamReader.ready())
+            {
+                String line = streamReader.readLine();
+                if (line != null)
+                {
+                    line = line + " ";
+                    if( isInComment ) {
+                        if (line.contains("*/")) {
+                            String tail = line.substring(line.indexOf("*/")+2);
+                            line = tail;
+                            isInComment = false;
+                        }
+                        else
+                            continue;
+                    }
+                    if (line.length() == 0)
+                    {
+                        continue;
+                    }
+                    if (line.contains("/*"))
+                    {
+                        String head="", tail="";
+                        head = line.substring(0, line.indexOf("/*"));
+                        if (line.contains("*/")){
+                            tail = line.substring(line.indexOf("*/")+2);
+                        }
+                        else
+                            isInComment = true;
+                        line = head + tail;
+                    }
+                    if (line.contains("//"))
+                    {
+                        line = line.substring(0, line.indexOf("//"));
+                        //continue;
+                    }
+
+                    buff.append(line);
+                }
+            }
+            String strTemp = buff.toString();
+
+            int nStart = strTemp.indexOf("class");
+            if( nStart < 0)
+                return strAtyName;
+            int nEnd = strTemp.substring(nStart).indexOf("{");
+            if( nEnd < 0)
+                return strAtyName;
+            String strClassLine = strTemp.substring(nStart, nStart+nEnd);
+
+            String delimiters = " ";
+            String pArray[] = strClassLine.split(delimiters);
+
+            if(pArray.length<4){
+                return strAtyName;
+            }
+            else{
+                if( pArray[3].indexOf("Activity")> -1){
+                    String xml = getLayoutXml(strTemp.toString());
+                    strAtyName.add(pArray[1]);
+                    strAtyName.add(xml);
+                }
+                return strAtyName;
+            }
+        }
+        catch (IOException e)
+        {
+            return strAtyName;
+        }
+    }
+
+    public static String getLayoutXml(String fileContent)
+    {
+        int nStartFunc = 0;
+        if( (nStartFunc = fileContent.indexOf("onCreate")) > -1){
+            int nStartLayout = fileContent.indexOf("setContentView", nStartFunc);
+            if( nStartLayout < 0 ) return "";
+            int nEndLayout = fileContent.indexOf(")", nStartLayout);
+            if( nEndLayout < 0 ) return "";
+            String lineLayout = fileContent.substring(nStartLayout,nEndLayout );
+            String[] layout = lineLayout.split("\\.");
+            if(layout.length < 3)return "";
+            return layout[2];
+        }
+        return "";
+    }
+
+    public static ArrayList<String> getXmlTagNames(VirtualFile file)        //Get Total Line Count of File
+    {
+        ArrayList<String> xmlTags = new ArrayList<String>();
+        try
+        {
+            xmlTags = getXmlTagNames(file.getInputStream());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return xmlTags;
+    }
+
+    private static ArrayList<String> getXmlTagNames(InputStream stream)
+    {
+        boolean isInComment = false;
+        ArrayList<String> xmlTags = new ArrayList<String>();
+        StringBuffer buff = new StringBuffer();
+        try
+        {
+            BufferedInputStream inputStream = new BufferedInputStream(stream);
+            LineNumberReader streamReader = new LineNumberReader(new InputStreamReader(inputStream));
+            while (streamReader.ready())
+            {
+                String line = streamReader.readLine();
+                if (line != null)
+                {
+                    line = line + " ";
+                    if( isInComment ) {
+                        if (line.contains("-->")) {
+                            String tail = line.substring(line.indexOf("-->")+3);
+                            line = tail;
+                            isInComment = false;
+                        }
+                        else
+                            continue;
+                    }
+                    if (line.length() == 0)
+                    {
+                        continue;
+                    }
+                    if (line.contains("<!--"))
+                    {
+                        String head="", tail="";
+                        head = line.substring(0, line.indexOf("<!--"));
+                        if (line.contains("-->")){
+                            tail = line.substring(line.indexOf("-->")+3);
+                        }
+                        else
+                            isInComment = true;
+                        line = head + tail;
+                    }
+                    buff.append(line);
+                }
+            }
+            String strTemp = buff.toString();
+
+            String delimiters = "<";
+            String pArray[] = strTemp.split(delimiters);
+            int nInput = 0, nOutput=0;
+            for(int i=0; i<pArray.length; i++ ){
+                String[] analysis = pArray[i].split(" ");
+                if( analysis.length < 1) continue;
+                if((analysis[0].indexOf("/")> -1)||(analysis[0].indexOf("?")> -1)) continue;
+                if( analysis[0].contains("Button")||analysis[0].contains("EditText")||
+                        analysis[0].contains("RadioGroup")||analysis[0].contains("RadioButton")||
+                        analysis[0].contains("ToggleButton")||analysis[0].contains("DatePicker")||
+                        analysis[0].contains("TimePicker")||analysis[0].contains("ImageButton")||
+                        analysis[0].contains("CheckBox")||analysis[0].contains("Spinner"))
+                    nInput++;
+                if( analysis[0].contains("TextView")||analysis[0].contains("ListView")||
+                        analysis[0].contains("GridView")||analysis[0].contains("View")||
+                        analysis[0].contains("ImageView")||analysis[0].contains("ProgressBar")||
+                        analysis[0].contains("GroupView"))
+                    nOutput++;
+            }
+            xmlTags.add(String.valueOf(nInput));
+            xmlTags.add(String.valueOf(nOutput));
+        }
+        catch (IOException e)
+        {
+        }
+        return xmlTags;
+    }
 }

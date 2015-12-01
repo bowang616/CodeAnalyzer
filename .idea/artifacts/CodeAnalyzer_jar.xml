@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CodeAnalyzer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CodeAnalyzer_jar</output-path>
+    <root id="archive" name="CodeAnalyzer_jar.jar">
+      <element id="module-output" name="CodeAnalyzer" />
+    </root>
+  </artifact>
+</component>

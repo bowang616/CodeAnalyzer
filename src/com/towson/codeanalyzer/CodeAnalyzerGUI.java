@@ -1,14 +1,16 @@
 package com.towson.codeanalyzer;
 
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataConstants;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.towson.codeanalyzer.android.AndroidRowBean;
+import com.towson.codeanalyzer.android.AndroidTableModel;
 import com.towson.codeanalyzer.java.JavaRowBean;
 import com.towson.codeanalyzer.java.JavaTableModel;
+import com.towson.codeanalyzer.render.ActivityRender;
 import com.towson.codeanalyzer.render.JavaRender;
 import com.towson.codeanalyzer.render.SummaryJavaRender;
 import com.towson.codeanalyzer.xml.XmlRowBean;
@@ -19,10 +21,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
@@ -58,13 +57,19 @@ public class CodeAnalyzerGUI extends JPanel {
 	// Js tab panel
     private JPanel JSTablePanel;
     private JTable jsTable;
-	
+
+    // Android tab panel
+    private JPanel AndroidPanel;
+    private JTable atyTable;
+
 	// Refresh button
     private JButton RefreshBtn;
 
     // Table model and render
     private final JavaTableModel modelJava = new JavaTableModel();
     private final JavaTableModel modelJavaSummary = new JavaTableModel();
+    private final AndroidTableModel modelAndroid = new AndroidTableModel();
+    private final AndroidTableModel modelAndroidSummary = new AndroidTableModel();
     private final XmlTableModel modelXml = new XmlTableModel();
     private final XmlTableModel modelXmlSummary = new XmlTableModel();
     private final XmlTableModel modelHtml = new XmlTableModel();
@@ -75,7 +80,8 @@ public class CodeAnalyzerGUI extends JPanel {
     private final XmlTableModel modelCssSummary = new XmlTableModel();
     private static final TableCellRenderer RENDERER_JAVA = new JavaRender();
     private static final TableCellRenderer RENDERER_SUMMARY_JAVA = new SummaryJavaRender();
-
+	private static final ActivityRender RENDERER_ANDROID = new ActivityRender();
+	
     public Project project;
 	public String projectPath;
     int m_fileCount=0;
@@ -89,6 +95,10 @@ public class CodeAnalyzerGUI extends JPanel {
         // Create Java table
         zCreateJavaTable();
         JavaTablePanel.add(createJavaTableSummary(), BorderLayout.SOUTH);
+
+        // Create Android table
+        zCreateAndroidTable();
+        AndroidPanel.add(createAndroidTableSummary(), BorderLayout.SOUTH);
 
         // Create XML table
         zCreateXmlTable();
@@ -108,27 +118,39 @@ public class CodeAnalyzerGUI extends JPanel {
 		
 		RefreshBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {    //Refresh Button Click Event
-                modelJavaSummary.removeRow();
-                modelJava.removeRow();
-                modelXml.removeRow();
-                modelXmlSummary.removeRow();
-
-                modelHtml.removeRow();
-                modelHtmlSummary.removeRow();
-
-                modelCss.removeRow();
-                modelCssSummary.removeRow();
-
-                modelJs.removeRow();
-                modelJsSummary.removeRow();
-                m_fileCount = 0;
-                zInit(projectPath, (CodeAnalyzerGUI.this).project);
-            }
+				clickRefeshBtn();
+			}
         });
-        this.project = projectValue;
-		this.projectPath = projectPath;
-		zInit(this.projectPath, this.project);
+		this.project = projectValue;
+        this.projectPath = projectPath;
+        zInit(this.projectPath, this.project);
+        clickRefeshBtn();
 	}
+
+	private void clickRefeshBtn(){
+	
+        modelJavaSummary.removeRow();
+        modelJava.removeRow();
+		
+        modelXml.removeRow();
+        modelXmlSummary.removeRow();
+
+        modelHtml.removeRow();
+        modelHtmlSummary.removeRow();
+
+        modelCss.removeRow();
+        modelCssSummary.removeRow();
+
+        modelJs.removeRow();
+        modelJsSummary.removeRow();
+
+        modelAndroid.removeRow();
+        modelAndroidSummary.removeRow();
+
+        m_fileCount = 0;
+        zInit(projectPath, (CodeAnalyzerGUI.this).project);
+	}
+	
 	private void zInit(String projectPath, Project projectValue)
 	{
         setJavaTableValue(this.project);
@@ -136,6 +158,11 @@ public class CodeAnalyzerGUI extends JPanel {
         setHtmlTableValue(this.project);
         setCssTableValue(this.project);
         setJsTableValue(this.project);
+		setAndriodTableValue(this.project);
+		atyTable.getColumnModel().getColumn(1).setCellRenderer(RENDERER_ANDROID);
+        atyTable.getColumnModel().getColumn(2).setCellRenderer(RENDERER_ANDROID);
+        atyTable.getColumnModel().getColumn(3).setCellRenderer(RENDERER_ANDROID);
+        atyTable.getColumnModel().getColumn(0).setCellRenderer(RENDERER_ANDROID);
         listFilesForFolder(projectPath);
     }
 
@@ -196,6 +223,75 @@ public class CodeAnalyzerGUI extends JPanel {
                 }
             }
         });
+    }
+
+    private void zCreateAndroidTable()
+    {
+        atyTable.setModel(modelAndroid);  //Set Model Values of Table
+        atyTable.setAutoResizeMode(0x4);
+        atyTable.getColumnModel().getColumn(0).setMinWidth(300);
+        TableRowSorter rowSorter = new TableRowSorter(modelAndroid);
+        ArrayList sortKeyArrayList = new ArrayList();
+        sortKeyArrayList.add(new RowSorter.SortKey(0, SortOrder.ASCENDING)); //Sort Key
+        rowSorter.setSortKeys(sortKeyArrayList);
+        rowSorter.sort();
+        atyTable.setRowSorter(rowSorter);
+        atyTable.getColumnModel().getColumn(0).setMinWidth(300);
+        atyTable.getColumnModel().getColumn(0).setCellRenderer(RENDERER_JAVA);
+        atyTable.getColumnModel().getColumn(2).setCellRenderer(RENDERER_JAVA);
+        atyTable.getColumnModel().getColumn(1).setCellRenderer(RENDERER_JAVA);
+        atyTable.getColumnModel().getColumn(3).setCellRenderer(RENDERER_JAVA);
+
+		atyTable.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int column = atyTable.getColumnModel().getColumnIndexAtX(e.getX());
+                int row = e.getY() / atyTable.getRowHeight();
+                showTooltip(row, column);
+            }
+        });
+        atyTable.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent e) // Event handler for double mouse click to open file
+            {
+                if (e.getClickCount() == 2)
+                {
+                    int column = atyTable.getColumnModel().getColumnIndexAtX(e.getX());
+                    int row = e.getY() / atyTable.getRowHeight();
+                    if ((column < modelAndroid.getColumnCount()) && (row < modelAndroid.getRowCount()))
+                    {
+                        VirtualFile file = (VirtualFile)atyTable.getValueAt(row, -1);
+                        if (file != null)
+                        {
+                            DataContext dataContext = DataManager.getInstance().getDataContext();
+                            Project project = (Project) DataKeys.PROJECT.getData(dataContext);
+                            FileEditorManager.getInstance(project).openFile(file, true);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Display hover text when moused over
+	private void showTooltip(int row, int column)
+    {
+        if (row >= 0) {
+            Object o = atyTable.getValueAt(row, column);
+            if(column == 0) {
+                int nInCnt = Integer.valueOf(modelAndroid.getValueAt(row, 2).toString());
+                int nOutCnt = Integer.valueOf(modelAndroid.getValueAt(row, 3).toString());
+                if( nInCnt + nOutCnt >= 10 )
+                    atyTable.setToolTipText("Too Many Inputs/Outputs");
+                else
+                    atyTable.setToolTipText(null);
+            }
+            else
+                atyTable.setToolTipText(null);
+        }
     }
 
     private void zCreateXmlTable()
@@ -353,7 +449,6 @@ public class CodeAnalyzerGUI extends JPanel {
 	/*
 	** Setting table summary for all tabs
 	*/
-	
     private JScrollPane createJavaTableSummary()
     {
         JTable table = new MyNoHeaderTable();
@@ -364,6 +459,25 @@ public class CodeAnalyzerGUI extends JPanel {
         table.getColumnModel().getColumn(2).setCellRenderer(RENDERER_SUMMARY_JAVA);
         table.getColumnModel().getColumn(1).setCellRenderer(RENDERER_SUMMARY_JAVA);
 		table.getColumnModel().getColumn(3).setCellRenderer(RENDERER_SUMMARY_JAVA);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setVerticalScrollBarPolicy(22);
+        JScrollBar jScrollBar = new JScrollBar();
+        jScrollBar.setUI(new EmptyScrollBarUI());
+        scrollPane.setVerticalScrollBar(jScrollBar);
+        scrollPane.setPreferredSize(new Dimension(0, table.getRowHeight() + 5));
+        return scrollPane;
+    }
+	
+	private JScrollPane createAndroidTableSummary()
+    {
+        JTable table = new MyNoHeaderTable();
+        table.setAutoResizeMode(4);
+        table.setModel(modelAndroidSummary);
+        table.getColumnModel().getColumn(0).setMinWidth(300);
+        table.getColumnModel().getColumn(0).setCellRenderer(RENDERER_SUMMARY_JAVA);
+        table.getColumnModel().getColumn(2).setCellRenderer(RENDERER_SUMMARY_JAVA);
+        table.getColumnModel().getColumn(1).setCellRenderer(RENDERER_SUMMARY_JAVA);
+        table.getColumnModel().getColumn(3).setCellRenderer(RENDERER_SUMMARY_JAVA);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(22);
         JScrollBar jScrollBar = new JScrollBar();
@@ -467,6 +581,63 @@ public class CodeAnalyzerGUI extends JPanel {
         }
         JavaRowBean javarowsummarybean = new JavaRowBean(null, "Total :", nTotalLineCount, nTotalCodeCount, nTotalMethodCodeCount);
         modelJavaSummary.addRow(javarowsummarybean);
+    }
+
+	private  void setAndriodTableValue(Project project)
+    {
+        ArrayList<VirtualFile> xmlFileList = getXmlFileList(project);
+        Map<String, Set<VirtualFile>> result =  CodeAnalyzerUtils.getVirtualFiles(project);
+        int nTotalInputCount = 0, nTotalOutputCount = 0;
+        for (String key : result.keySet()) {
+            if (key.equals("java"))
+            {
+                Set<VirtualFile> virtualfile = result.get(key);
+                for (VirtualFile files : virtualfile)
+                {
+                    ArrayList<String> xmlTags = new ArrayList<String>();
+                    ArrayList<String> actName = CodeAnalyzerUtils.getActivityName(files);
+                    if( actName.size()==0)
+                        continue;
+
+                    for ( int i=0; i<xmlFileList.size(); i++) {
+                        if( xmlFileList.get(i).getName().equals(actName.get(1)+".xml") ){
+                            xmlTags = CodeAnalyzerUtils.getXmlTagNames(xmlFileList.get(i));
+                            break;
+                        }
+                    }
+					if( actName.get(1).equals("") ) continue; // If there is no xml layout file in Activity Name, don't display
+                    AndroidRowBean androidrowbean;
+                    if( xmlTags.size()==0){
+                        androidrowbean = new AndroidRowBean(files, actName.get(0), actName.get(1), 0, 0);
+                    }
+                    else {
+                        androidrowbean = new AndroidRowBean(files, actName.get(0), actName.get(1), Integer.valueOf(xmlTags.get(0)), Integer.valueOf(xmlTags.get(1)));
+                        nTotalInputCount += Integer.valueOf(xmlTags.get(0));
+                        nTotalOutputCount += Integer.valueOf(xmlTags.get(1));
+                    }
+                    modelAndroid.addRow(androidrowbean);
+                }
+            }
+        }
+        AndroidRowBean androidrowsummarybean = new AndroidRowBean(null, "Total :", "", nTotalInputCount, nTotalOutputCount);
+        modelAndroidSummary.addRow(androidrowsummarybean);
+    }
+    private  ArrayList<VirtualFile> getXmlFileList(Project project)
+    {
+        Map<String, Set<VirtualFile>> result =  CodeAnalyzerUtils.getVirtualFiles(project);
+        ArrayList<VirtualFile> ret = new ArrayList<VirtualFile>();
+        for (String key : result.keySet()) {
+            if (key.equals("xml"))
+            {
+                Set<VirtualFile> virtualfile = result.get(key);
+                for (VirtualFile files : virtualfile)
+                {
+                    ret.add(files);
+
+                }
+            }
+        }
+        return ret;
     }
 
     private void setXmlTableValue(Project project)

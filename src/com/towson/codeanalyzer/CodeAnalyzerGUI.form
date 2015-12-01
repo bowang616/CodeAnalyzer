@@ -193,6 +193,31 @@
               </scrollpane>
             </children>
           </grid>
+          <grid id="f7f64" binding="AndroidPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Android"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="2ac2a">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="bd2e0" class="javax.swing.JTable" binding="atyTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-12828863"/>
+                      <foreground color="-1"/>
+                      <gridColor color="-12828863"/>
+                      <selectionBackground color="-12024100"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
         </children>
       </tabbedpane>
       <grid id="e1a08" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -201,8 +226,9 @@
         <border type="none"/>
         <children>
           <component id="a8620" class="javax.swing.JButton" binding="RefreshBtn">
-            <constraints border-constraint="Before"/>
+            <constraints border-constraint="West"/>
             <properties>
+              <horizontalTextPosition value="11"/>
               <text value="Refresh"/>
             </properties>
           </component>
