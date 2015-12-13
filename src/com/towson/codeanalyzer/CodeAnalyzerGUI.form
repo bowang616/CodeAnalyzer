@@ -226,9 +226,8 @@
         <border type="none"/>
         <children>
           <component id="a8620" class="javax.swing.JButton" binding="RefreshBtn">
-            <constraints border-constraint="West"/>
+            <constraints border-constraint="Before"/>
             <properties>
-              <horizontalTextPosition value="11"/>
               <text value="Refresh"/>
             </properties>
           </component>

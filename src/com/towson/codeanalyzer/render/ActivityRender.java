@@ -27,7 +27,7 @@ public class ActivityRender extends DefaultTableCellRenderer {
             int nInCnt = Integer.valueOf(model.getValueAt(row, 2).toString());
             int nOutCnt = Integer.valueOf(model.getValueAt(row, 3).toString());
 
-            if( nInCnt + nOutCnt >=10 )
+            if( ( nInCnt + nOutCnt >=10 ) && ( !value.toString().equals("Total :")) )
                 jLabel.setIcon(icon);
             else
                 jLabel.setIcon(null);

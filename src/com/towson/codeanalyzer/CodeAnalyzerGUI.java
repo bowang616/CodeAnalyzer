@@ -18,6 +18,7 @@ import com.towson.codeanalyzer.xml.XmlTableModel;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -61,6 +62,7 @@ public class CodeAnalyzerGUI extends JPanel {
     // Android tab panel
     private JPanel AndroidPanel;
     private JTable atyTable;
+	private JTable atyTotalTable;
 
 	// Refresh button
     private JButton RefreshBtn;
@@ -237,10 +239,10 @@ public class CodeAnalyzerGUI extends JPanel {
         rowSorter.sort();
         atyTable.setRowSorter(rowSorter);
         atyTable.getColumnModel().getColumn(0).setMinWidth(300);
-        atyTable.getColumnModel().getColumn(0).setCellRenderer(RENDERER_JAVA);
-        atyTable.getColumnModel().getColumn(2).setCellRenderer(RENDERER_JAVA);
-        atyTable.getColumnModel().getColumn(1).setCellRenderer(RENDERER_JAVA);
-        atyTable.getColumnModel().getColumn(3).setCellRenderer(RENDERER_JAVA);
+        atyTable.getColumnModel().getColumn(1).setCellRenderer(RENDERER_ANDROID);
+        atyTable.getColumnModel().getColumn(2).setCellRenderer(RENDERER_ANDROID);
+        atyTable.getColumnModel().getColumn(3).setCellRenderer(RENDERER_ANDROID);
+        atyTable.getColumnModel().getColumn(0).setCellRenderer(RENDERER_ANDROID);
 
 		atyTable.addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -470,20 +472,20 @@ public class CodeAnalyzerGUI extends JPanel {
 	
 	private JScrollPane createAndroidTableSummary()
     {
-        JTable table = new MyNoHeaderTable();
-        table.setAutoResizeMode(4);
-        table.setModel(modelAndroidSummary);
-        table.getColumnModel().getColumn(0).setMinWidth(300);
-        table.getColumnModel().getColumn(0).setCellRenderer(RENDERER_SUMMARY_JAVA);
-        table.getColumnModel().getColumn(2).setCellRenderer(RENDERER_SUMMARY_JAVA);
-        table.getColumnModel().getColumn(1).setCellRenderer(RENDERER_SUMMARY_JAVA);
-        table.getColumnModel().getColumn(3).setCellRenderer(RENDERER_SUMMARY_JAVA);
-        JScrollPane scrollPane = new JScrollPane(table);
+        atyTotalTable = new MyNoHeaderTable();
+        atyTotalTable.setAutoResizeMode(4);
+        atyTotalTable.setModel(modelAndroidSummary);
+        atyTotalTable.getColumnModel().getColumn(0).setMinWidth(300);
+        atyTotalTable.getColumnModel().getColumn(0).setCellRenderer(RENDERER_ANDROID);
+        atyTotalTable.getColumnModel().getColumn(2).setCellRenderer(RENDERER_ANDROID);
+        atyTotalTable.getColumnModel().getColumn(1).setCellRenderer(RENDERER_ANDROID);
+        atyTotalTable.getColumnModel().getColumn(3).setCellRenderer(RENDERER_ANDROID);
+        JScrollPane scrollPane = new JScrollPane(atyTotalTable);
         scrollPane.setVerticalScrollBarPolicy(22);
         JScrollBar jScrollBar = new JScrollBar();
         jScrollBar.setUI(new EmptyScrollBarUI());
         scrollPane.setVerticalScrollBar(jScrollBar);
-        scrollPane.setPreferredSize(new Dimension(0, table.getRowHeight() + 5));
+        scrollPane.setPreferredSize(new Dimension(0, atyTotalTable.getRowHeight() + 5));
         return scrollPane;
     }
 
@@ -621,6 +623,14 @@ public class CodeAnalyzerGUI extends JPanel {
         }
         AndroidRowBean androidrowsummarybean = new AndroidRowBean(null, "Total :", "", nTotalInputCount, nTotalOutputCount);
         modelAndroidSummary.addRow(androidrowsummarybean);
+		atyTotalTable.getColumnModel().getColumn(0).setWidth(atyTable.getColumnModel().getColumn(0).getWidth());
+        atyTotalTable.getColumnModel().getColumn(0).setCellRenderer(RENDERER_ANDROID);
+        atyTotalTable.getColumnModel().getColumn(1).setWidth(atyTable.getColumnModel().getColumn(1).getWidth()+10);
+        atyTotalTable.getColumnModel().getColumn(2).setCellRenderer(RENDERER_ANDROID);
+        atyTotalTable.getColumnModel().getColumn(2).setWidth(atyTable.getColumnModel().getColumn(2).getWidth());
+        atyTotalTable.getColumnModel().getColumn(1).setCellRenderer(RENDERER_ANDROID);
+        atyTotalTable.getColumnModel().getColumn(3).setWidth(atyTable.getColumnModel().getColumn(3).getWidth());
+        atyTotalTable.getColumnModel().getColumn(3).setCellRenderer(RENDERER_ANDROID);
     }
     private  ArrayList<VirtualFile> getXmlFileList(Project project)
     {
